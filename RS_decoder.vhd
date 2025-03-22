@@ -1,4 +1,4 @@
-0olibrary ieee;
+library ieee;
 use ieee.std_logic_1164.all;
 
 entity RS_decoder is
@@ -40,14 +40,17 @@ begin
 
 	I1_s(31) <= '0'; 
 	I2_s(31) <= (not(b(31)) and not(b(30)) and b(29) and not(v(0))) or 
-					(not(b(31)) and b(30) and b(30) and not(v(1)) and v(0)) or
-					(not(b(31)) and b(30) and b(29) and ((v(0) and v(1)) or not(v(0)))) or
-					(b(31) and b(30) and b(29) and (v(1) and not(v(0)) or not(v(1))));
+					(not(b(31)) and b(30) and b(29) and not(v(1)) and v(0)) or
+					(b(31) and b(30) and b(29) and v(0) and v(1));
 	R_ip1_s(31) <= '0';
 	R_ip2_s(31) <= '0';
-	self_s(31) <= (not(b(29))) or (not(b(30)) and b(29) and v(0)) or (not(b(31)) and b(30) and b(29) and (v(1) and v(0) or not(v(0))));
-	bs_out(31) <= (not(b(30)) and b(29) and not(v(0))) or (not(b(31)) and b(30) and b(29) and not(v(1)) and v(0));
-	st31 <= (not(b(31)) and b(30) and b(29) and not(v(0))) or (b(31) and b(30) and b(29) and (v(1) and not(v(0)) or not(v(1))));
+	self_s(31) <= (not b(29)) or 
+              (not b(30) and b(29) and v(0)) or 
+              (not b(31) and b(30) and ((v(1) and v(0)) or not v(0))) or
+              (b(31) and ((v(1) and not v(0)) or not v(1)));
+	bs_out(31) <= (not(b(30)) and b(29) and not(v(0))) or (not(b(31)) and b(30) and not(v(1)) and v(0)) or (b(31) and (not(v(0)) or v(1)));
+	st31 <= (not(b(31)) and b(30) and not(v(0))) or 
+	        (b(31) and ( (v(1) and not(v(0))) or not(v(1)) ) );
 	
 	
 --	I1_s(30) <= ((not(b(30)) and b(29)) and (not(v(0)))) or ((not(b(31)) and b(30)) and (not(v(1)) and v(0))) or ((b(31)) and (v(1) and v(0)));
@@ -68,10 +71,11 @@ begin
 	self_s(30) <= (b(28)) or (v(0) and b(28) and not(b(29))) or (v(0) and v(1) and b(28) and b(29) and not(b(30))) or
 						(not(v(0)) and b(28) and b(29) and b(30) and not(b(31))) or (not(v(0)) and v(1) and b(28) and b(29) and b(30) and b(31));
 						
-	bs_out(30) <= (not(v(0)) and b(28) and not(b(29))) or (b(28) and b(29) and not(b(30)) and (not(v(1)) or v(1) and not(v(0)))) or 
-						(b(28) and b(29) and b(30));
-	st30 <= (not(v(0)) and b(30) and not(b(31))) or (b(31) and (not(v(1)) or v(1) and not(v(0))));
-						
+	bs_out(30) <= (not(v(0)) and b(28) and not(b(29))) or 
+					  (b(29) and not(b(30)) and (not(v(1)) or (v(1) and not(v(0))))) or 
+					  (b(30));
+	st30 <= (not(v(0)) and b(30) and not(b(31))) or 
+			  (b(31) and (not(v(1)) or (v(1) and not(v(0)))));
 						
 
 	I1_s(29) <= ((not(b(29)) and b(28) and b(27)) and (not(v(0)))) or ((not(b(30)) and b(29) and b(28) and b(27)) and (not(v(1)) and v(0))) or ((not(b(31)) and b(30) and b(29) and b(28) and b(27)) and (v(1) and v(0)));
@@ -95,10 +99,12 @@ begin
 	
 	end generate;
 	
-	I1_s(1) <= ((not(b(1)) and b(0)) and (not(v(0)))) or ((not(b(2)) and b(1) and b(0) and (not(v(1)) and v(0))) or ((not(b(3)) and b(2)) and (v(1) and v(0))); --verified
+	I1_s(1) <= ((not(b(1)) and b(0)) and (not(v(0)))) or 
+				  ((not(b(2)) and b(1) and (not(v(1)) and v(0)))) or 
+				  ((not(b(3)) and b(2)) and (v(1) and v(0))); --verified
 	I2_s(1) <= not(b(0)) or ((not(b(1)) and b(0)) and (v(0))) or ((not(b(2)) and b(1)) and (v(1) and v(0))); --verified
 	R_ip1_s(1) <= b(2) and b(1) and b(0) and not(v(1)) and v(0); --verified
-	R_ip2_s(1) <= b(3) and dfb(2) and b(1) and b(0) and v(1) and v(0); --verified
+	R_ip2_s(1) <= b(3) and b(2) and b(1) and b(0) and v(1) and v(0); --verified
 	self_s(1) <= not(I1_s(1) or I2_s(1) or R_ip1_s(1) or R_ip2_s(1)); --verified
 	bs_out(1) <= '1'; --verified
 	

@@ -1,5 +1,8 @@
-library ieee;
-use ieee.std_logic_1164.all;
-
-entity In_Order_2_Way is
-end entity;
+--library ieee;
+--use ieee.std_logic_1164.all;
+--
+--entity In_Order_2_Way is
+--end entity;
+--
+--architecture bhv of In_Order_2_Way is
+--	component res_stn
