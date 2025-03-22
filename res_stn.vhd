@@ -24,9 +24,10 @@ architecture struct of res_stn is
 	
 	type memory_array is array (31 downto 0) of std_logic_vector (65 downto 0);
 	
-	signal Q, D: memory_array;
+	signal D, Q : memory_array;
+	
 	signal bs, vl, self_s, I1_s, I2_s, R_ip1_s, R_ip2_s: std_logic_vector(31 downto 0);
-	signal NOP: std_logic_vector(65 downto 0) := "10110000000000000000000000000000000000000000000000000000000000000";
+	signal NOP: std_logic_vector(65 downto 0) := "101100000000000000000000000000000000000000000000000000000000000000";
 	signal bs_out, vl_out: std_logic_vector(31 downto 0);
 	signal st: std_logic;
 	
@@ -42,8 +43,25 @@ begin
 		D(i)(65) <= vl_out(i);
 		bs(i) <= Q(i)(64);
 		vl(i) <= Q(i)(65);
-		dff1: DFF_65 port map(D=>D(i), clk=>clk, rst=>rst, Q=>Q(i));
+		dff1: DFF_65 port map(D=>D(i)(65 downto 0), clk=>clk, rst=>rst, Q=>Q(i)(65 downto 0));
 	end generate;
+	
+	n2: for j in 63 downto 0 generate
+		D(30)(j)<= (self_s(30) and Q(30)(j)) or (I1_s(30) and I1(j)) or (I2_s(30) and I2(j)) or (R_ip1_s(30) and Q(30+1)(j));
+		D(31)(j)<= (self_s(31) and Q(31)(j)) or (I1_s(31) and I1(j)) or (I2_s(31) and I2(j));
+	end generate;
+	
+	D(30)(64) <= bs_out(30);
+	D(30)(65) <= vl_out(30);
+	bs(30) <= Q(30)(64);
+	vl(30) <= Q(30)(65);
+	dff30: DFF_65 port map(D=>D(30)(65 downto 0), clk=>clk, rst=>rst, Q=>Q(30)(65 downto 0));
+	
+	D(31)(64) <= bs_out(31);
+	D(31)(65) <= vl_out(31);
+	bs(31) <= Q(31)(64);
+	vl(31) <= Q(31)(65);
+	dff31: DFF_65 port map(D=>D(31)(65 downto 0), clk=>clk, rst=>rst, Q=>Q(31)(65 downto 0));
 	
 	n3: for i in 63 downto 0 generate
 		I_out1(i) <= (vl(0) and Q(0)(i)) or (not(vl(0)) and NOP(i));
