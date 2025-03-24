@@ -37,6 +37,8 @@ architecture Struct of Pipeline_CPU is
 			RF_W_dec_out: in std_logic;
 			RF_A3_RR_EX, RF_A3_dec_out, RF_A3_EX_Mem: in std_logic_vector(2 downto 0);
 			ALU1_C, Imm16_dec_out, Data_Mem_D_out: in std_logic_vector(15 downto 0);
+			PC_in_R0: in std_logic_vector(15 downto 0);
+			st_bit: in std_logic;
 			IP_mux_out: out std_logic_vector(15 downto 0);
 			rst_IF_ID, rst_ID_RR, rst_RR_EX, rst_EX_Mem, rst_Mem_WB: out std_logic;
 			hx7, b_hazard_for_lm_sm: out std_logic);
@@ -312,7 +314,7 @@ begin
 	
 	RF_W_dec : RF_W_decoder port map(Inst_RR_EX(0), Inst_RR_EX(1), CY, Zf, Inst_RR_EX(15 downto 12), RF_W_dec_out);
 	
-	M1 : M1_IP_Mux port map(INST_IF_ID(15 downto 12), INST_ID_RR(15 downto 12), INST_RR_EX(15 downto 12), INST_EX_Mem(15 downto 12), ALU4_C, ALU5_C, RF_D1, ALU3_C, ALU2_C, ALU1_Z, ALU1_Cy, RF_W_dec_out, RF_A3_RR_EX, RF_A3_mux_out, RF_A3_EX_Mem, ALU1_C, Imm16_mux_out, Data_Mem_D_out, PC_mux_out, rst_IF_ID_imh, rst_ID_RR_imh, rst_RR_EX_imh, rst_EX_mem_imh, rst_Mem_WB_imh, hz_global, b_hazard_for_lm_sm);
+	M1 : M1_IP_Mux port map(INST_IF_ID(15 downto 12), INST_ID_RR(15 downto 12), INST_RR_EX(15 downto 12), INST_EX_Mem(15 downto 12), ALU4_C, ALU5_C, RF_D1, ALU3_C, ALU2_C, ALU1_Z, ALU1_Cy, RF_W_dec_out, RF_A3_RR_EX, RF_A3_mux_out, RF_A3_EX_Mem, ALU1_C, Imm16_mux_out, Data_Mem_D_out, PC, st_bit, PC_mux_out, rst_IF_ID_imh, rst_ID_RR_imh, rst_RR_EX_imh, rst_EX_mem_imh, rst_Mem_WB_imh, hz_global, b_hazard_for_lm_sm);
 	
 	EX_Mem_reg : EX_MEM port map(INST_RR_EX, RF_D2_RR_EX, ALU1_C, IMM16_RR_Ex, RF_A3_RR_EX, Mem_W_RR_EX, PC_W_RR_EX, RF_W_dec_out, RST_EX_Mem, Clk, En_EX_Mem, Inst_EX_MEM, RF_D2_EX_MEM, ALU1_C_EX_Mem, IMM16_EX_Mem, RF_A3_EX_Mem, Mem_W_EX_Mem, PC_W_Ex_Mem, RF_W_Ex_Mem, LM_bit_RR_EX, LM_bit_EX_Mem);
 	

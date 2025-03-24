@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 entity score_board is
 	port (clk, rst: in std_logic;
-			op_I1, op_I2: in std_logic_vector(11 downto 0); -- 3 operands in an instruction wherein each operand is of 4 bits
+			op_I1, op_I2: in std_logic_vector(11 downto 0); -- 3 operands in an instruction wherein each operand is of 4 bits, just to read the score-board
 			dest_ID_RR1, dest_ID_RR2, dest_RR_EX1, dest_RR_EX2, dest_EX_Mem1, dest_EX_Mem2, dest_Mem_WB1, dest_Mem_WB2, dest_I1, dest_I2: in std_logic_vector(11 downto 0);
 			busy_I1, busy_I2: out std_logic_vector(2 downto 0));
 end entity;
@@ -91,7 +91,7 @@ begin
 	n2: for i in 10 downto 0 generate -- score_board's register for storing valid bits of every operand
 		dfi1: New_D_FF port map(finalD(i), clk, rst, Q(i));
 	end generate;
-   -- encoder basically tells whether the corresponding operand has got valid 1 or 0 in the score_board's register
+   -- encoder basically tells whether the corresponding operand has got busy 1 or 0 in the score_board's register
 	eni1: encoder_11_1 port map(op_I1(11 downto 8), Q, busy_I1(2));
 	eni2: encoder_11_1 port map(op_I1(7 downto 4), Q, busy_I1(1));
 	eni3: encoder_11_1 port map(op_I1(3 downto 0), Q, busy_I1(0));

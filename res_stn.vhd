@@ -27,7 +27,7 @@ architecture struct of res_stn is
 	signal D, Q : memory_array;
 	
 	signal bs, vl, self_s, I1_s, I2_s, R_ip1_s, R_ip2_s: std_logic_vector(31 downto 0);
-	signal NOP: std_logic_vector(65 downto 0) := "101100000000000000000000000000000000000000000000000000000000000000";
+	signal NOP: std_logic_vector(63 downto 0) := "1011000000000000000000000000000000000000000000000000000000000000";
 	signal bs_out, vl_out: std_logic_vector(31 downto 0);
 	signal st: std_logic;
 	

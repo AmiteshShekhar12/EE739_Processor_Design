@@ -19,7 +19,7 @@ begin
 	b<= inst_in(0); --Z flag
 	
 	opcd_s(0) <= not(opcd(3)) and not(opcd(2)) and not(opcd(1)) and not(opcd(0));
-	opcd_s(1) <= not(opcd(3)) and not(opcd(2)) and not(opcd(1)) and (opcd(0));
+	opcd_s(1) <= not(opcd(3)) and not(opcd(2)) and not(opcd(1)) and (opcd(0)); -- opcode of ADA and similar add instructions
 	opcd_s(2) <= not(opcd(3)) and not(opcd(2)) and (opcd(1)) and not(opcd(0));
 	opcd_s(3) <= not(opcd(3)) and not(opcd(2)) and (opcd(1)) and (opcd(0));
 	opcd_s(4) <= not(opcd(3)) and (opcd(2)) and not(opcd(1)) and not(opcd(0));
@@ -29,7 +29,7 @@ begin
 	opcd_s(8) <= (opcd(3)) and not(opcd(2)) and not(opcd(1)) and not(opcd(0));
 	opcd_s(9) <= (opcd(3)) and not(opcd(2)) and not(opcd(1)) and (opcd(0));
 	opcd_s(10) <= (opcd(3)) and not(opcd(2)) and (opcd(1)) and not(opcd(0));
-	opcd_s(11) <= (opcd(3)) and not(opcd(2)) and (opcd(1)) and (opcd(0));
+	opcd_s(11) <= (opcd(3)) and not(opcd(2)) and (opcd(1)) and (opcd(0)); --opcode of NOP
 	opcd_s(12) <= (opcd(3)) and (opcd(2)) and not(opcd(1)) and not(opcd(0));
 	opcd_s(13) <= (opcd(3)) and (opcd(2)) and not(opcd(1)) and (opcd(0));
 	opcd_s(14) <= (opcd(3)) and (opcd(2)) and (opcd(1)) and not(opcd(0));

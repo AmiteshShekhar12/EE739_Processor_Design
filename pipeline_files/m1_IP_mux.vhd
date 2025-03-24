@@ -7,6 +7,7 @@ entity m1_IP_mux is
 			ALU1_Z, ALU1_Cy: in std_logic;
 			RF_W_dec_out: in std_logic;
 			RF_A3_RR_EX, RF_A3_dec_out, RF_A3_EX_Mem: in std_logic_vector(2 downto 0);
+			st_in : in std_logic;
 			ALU1_C, Imm16_dec_out, Data_Mem_D_out: in std_logic_vector(15 downto 0);
 			IP_mux_out: out std_logic_vector(15 downto 0);
 			rst_IF_ID, rst_ID_RR, rst_RR_EX, rst_EX_Mem, rst_Mem_WB: out std_logic;
@@ -18,7 +19,7 @@ architecture struct of m1_IP_mux is
 
 	signal c1, c2, c3, c4, c5, c6, c7, s5, s6, s7, l1, l2, l3: std_logic;
 	signal x1, x2, x3, x4, x5, x6, x7, x_bar: std_logic;
-	signal IP1, IP2, IP3, IP4, IP5, IP6, IP7, IP_def: std_logic_vector(15 downto 0);
+	signal IP1, IP2, IP3, IP4, IP5, IP6, IP7, IP_def, IP8: std_logic_vector(15 downto 0);
 	signal op: std_logic_vector(3 downto 0);
 
 begin
