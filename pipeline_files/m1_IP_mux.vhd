@@ -7,8 +7,9 @@ entity m1_IP_mux is
 			ALU1_Z, ALU1_Cy: in std_logic;
 			RF_W_dec_out: in std_logic;
 			RF_A3_RR_EX, RF_A3_dec_out, RF_A3_EX_Mem: in std_logic_vector(2 downto 0);
-			st_in : in std_logic;
 			ALU1_C, Imm16_dec_out, Data_Mem_D_out: in std_logic_vector(15 downto 0);
+			PC_in_R0: in std_logic_vector(15 downto 0);
+			st_bit: in std_logic;
 			IP_mux_out: out std_logic_vector(15 downto 0);
 			rst_IF_ID, rst_ID_RR, rst_RR_EX, rst_EX_Mem, rst_Mem_WB: out std_logic;
 			hx7, b_hazard_for_lm_sm: out std_logic);
@@ -18,8 +19,8 @@ end entity;
 architecture struct of m1_IP_mux is
 
 	signal c1, c2, c3, c4, c5, c6, c7, s5, s6, s7, l1, l2, l3: std_logic;
-	signal x1, x2, x3, x4, x5, x6, x7, x_bar: std_logic;
-	signal IP1, IP2, IP3, IP4, IP5, IP6, IP7, IP_def, IP8: std_logic_vector(15 downto 0);
+	signal x1, x2, x3, x4, x5, x6, x7, x8, x_bar: std_logic;
+	signal IP1, IP2, IP3, IP4, IP5, IP6, IP7, IP_def: std_logic_vector(15 downto 0);
 	signal op: std_logic_vector(3 downto 0);
 
 begin
@@ -49,7 +50,8 @@ begin
 	x4<= c4 and not(l1);
 	x5<= c5 and not(l1);
 	x7<= c7;
-	x_bar<= not(x1) and not(x2) and not(x3) and not(x4) and not(x5) and not(x6) and not(x7);
+	x8<= st_bit and not(c1) and not(l1) and not(l2) and not(l3) and not(c6);
+	x8<= not(x1) and not(x2) and not(x3) and not(x4) and not(x5) and not(x6) and not(x7) and not(x8);
 	
 	IP1<= ALU4_C;
 	IP2<= RF_D1;
@@ -62,7 +64,7 @@ begin
 	
 	n: for i in 15 downto 0 generate
 		IP_mux_out(i)<= (x1 and IP1(i)) or (x2 and IP2(i)) or (x3 and IP3(i)) or (x4 and IP4(i)) or (x5 and IP5(i)) or (x6 and IP6(i))
-								or (x7 and IP7(i)) or (x_bar and IP_def(i));
+								or (x7 and IP7(i)) or (x_bar and IP_def(i)) or (x8 and PC_in_R0(i));
 	end generate n;
 	
 	rst_IF_ID<= x5 or x6 or x7;

@@ -51,9 +51,9 @@ begin
 	f3<= opcode_RR_Ex(3) and not(opcode_RR_Ex(2)) and opcode_RR_Ex(1) and not(opcode_RR_Ex(0));
 	f4<= opcode_ID_RR(3) and opcode_ID_RR(2) and not(opcode_ID_RR(1)) and opcode_ID_RR(0);
 	f5<= opcode_ID_RR(3) and opcode_ID_RR(2) and opcode_ID_RR(1) and opcode_ID_RR(0);
-	f6<= opcode_IF_ID(3) and opcode_IF_ID(2) and not(opcode_IF_ID(1)) and not(opcode_IF_ID(0));
+	--f6<= opcode_IF_ID(3) and opcode_IF_ID(2) and not(opcode_IF_ID(1)) and not(opcode_IF_ID(0));
 	
-	rst1 <= (f1 and z) or (f2 and c) or (f3 and (c or z)) or f4 or f5 or f6;
+	rst1 <= (f1 and z) or (f2 and c) or (f3 and (c or z)) or f4 or f5;-- or f6;
 	rst2 <= (f1 and z) or (f2 and c) or (f3 and (c or z)) or f4 or f5;
 	rst3 <= (f1 and z) or (f2 and c) or (f3 and (c or z));
 	rst4 <= '0';

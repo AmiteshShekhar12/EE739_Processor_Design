@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 entity score_board is
 	port (clk, rst: in std_logic;
-			op_I1, op_I2: in std_logic_vector(11 downto 0); -- 3 operands in an instruction wherein each operand is of 4 bits, just to read the score-board
+			op_I1, op_I2: in std_logic_vector(11 downto 0); -- 3 operands in an instruction wherein each operand is of 4 bits
 			dest_ID_RR1, dest_ID_RR2, dest_RR_EX1, dest_RR_EX2, dest_EX_Mem1, dest_EX_Mem2, dest_Mem_WB1, dest_Mem_WB2, dest_I1, dest_I2: in std_logic_vector(11 downto 0);
 			busy_I1, busy_I2: out std_logic_vector(2 downto 0));
 end entity;
@@ -28,7 +28,8 @@ architecture struct of score_board is
 	
 	signal x1, x2, x3, x4, x5, x6, y1, y2, y3, y4, y5, y6, y7, y8: std_logic_vector(9 downto 0);
 	signal xn1, xn2, xn3, xn4, xn5, xn6, y9, y10, y11, y12, y13, y14, y15, y16, y17, y18, y19, y20, y21, y22, y23, y24: std_logic_vector(9 downto 0);
-	signal make0, make1, finalD, Q: std_logic_vector(10 downto 0); --11th bit corresponds to '1010' : invalid operand
+	signal make0, make1, finalD, Q: std_logic_vector(10 downto 0);
+	
 begin
 	-- Mem_WB's instructions are make0 while all others are make1
 	-- xi's are for make0 while yi's are for make1
@@ -56,12 +57,12 @@ begin
 	di22: dec_4_16 port map (dest_EX_Mem2(11 downto 8), y16);
 	di23: dec_4_16 port map (dest_EX_Mem2(7 downto 4), y17);
 	di24: dec_4_16 port map (dest_EX_Mem2(3 downto 0), y18);
-	di25: dec_4_16 port map (dest_I1(11 downto 8), y19); --from R0 and R1 of reservation station
-	di26: dec_4_16 port map (dest_I1(7 downto 4), y20);  --from R0 and R1 of reservation station
-	di27: dec_4_16 port map (dest_I1(3 downto 0), y21); --from R0 and R1 of reservation station
-	di28: dec_4_16 port map (dest_I2(11 downto 8), y22);--from R0 and R1 of reservation station
-	di29: dec_4_16 port map (dest_I2(7 downto 4), y23);--from R0 and R1 of reservation station
-	di30: dec_4_16 port map (dest_I2(3 downto 0), y24);--from R0 and R1 of reservation station
+	di25: dec_4_16 port map (dest_I1(11 downto 8), y19);
+	di26: dec_4_16 port map (dest_I1(7 downto 4), y20);
+	di27: dec_4_16 port map (dest_I1(3 downto 0), y21);
+	di28: dec_4_16 port map (dest_I2(11 downto 8), y22);
+	di29: dec_4_16 port map (dest_I2(7 downto 4), y23);
+	di30: dec_4_16 port map (dest_I2(3 downto 0), y24);
 	
 	-- make1 is 1 means we want to make the vaild 1, and if it is 0 it means we don't want to make valid 1.
 	-- make0 is 1 means we don't want to make the vaild 0, and if it is 0 it means we want to make valid 0.
@@ -91,7 +92,7 @@ begin
 	n2: for i in 10 downto 0 generate -- score_board's register for storing valid bits of every operand
 		dfi1: New_D_FF port map(finalD(i), clk, rst, Q(i));
 	end generate;
-   -- encoder basically tells whether the corresponding operand has got busy 1 or 0 in the score_board's register
+   -- encoder basically tells whether the corresponding operand has got valid 1 or 0 in the score_board's register
 	eni1: encoder_11_1 port map(op_I1(11 downto 8), Q, busy_I1(2));
 	eni2: encoder_11_1 port map(op_I1(7 downto 4), Q, busy_I1(1));
 	eni3: encoder_11_1 port map(op_I1(3 downto 0), Q, busy_I1(0));

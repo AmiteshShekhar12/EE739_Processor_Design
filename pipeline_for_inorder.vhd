@@ -2,7 +2,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity Pipeline_CPU is
-	port(clk, reset: in std_logic);
+	port(clk, reset: in std_logic;
+			RF_A1, RF_A2, RF_A3: out std_logic_vector(3 downto 0);
+			RF_D3: out std_logic_vector(15 downto 0);
+			RF_D1, RF_D2: in std_logic_vector(15 downto 0);
+			RF_PC_W: out std_logic_vector;
+			RF_PC_in: out Std_logic_vector(15 downto 0);
+			RF_PC_out: in std_logic_vector(15 downto 0)
+			RF_W: out std_logic
+			i_memory_out: in std_logic_vector(15 downto 0));
 end entity Pipeline_CPU;
 
 architecture Struct of Pipeline_CPU is
@@ -273,9 +281,20 @@ begin
 	
 	Program_counter_W <= (mult_cntrl_bar or (not(mult_cntrl_bar) and b_hazard_for_lm_sm)) and PC_W_hz_a1 and PC_W_hz_a2;
 	
-	RF: RegisterFile port map(RF_A1_ID_RR, RF_A2_ID_RR, RF_A3_Mem_WB, RF_D1_mux1_in, RF_D2_mux1_in, RF_D3_mux_out, Program_counter_W, PC_mux_out, PC, RF_W_Mem_WB, clk, reset);
+	--RF: RegisterFile port map(RF_A1_ID_RR, RF_A2_ID_RR, RF_A3_Mem_WB, RF_D1_mux1_in, RF_D2_mux1_in, RF_D3_mux_out, Program_counter_W, PC_mux_out, PC, RF_W_Mem_WB, clk, reset);
+	RF_A1<=RF_A1_ID_RR;
+	RF_A2<=RF_A2_ID_RR
+	RF_A3<=RF_A3_Mem_WB;
+	RF_D3<=RF_D3_mux_out;
+	RF_D1_mux1_in<=RF_D1;
+	RF_D2_mux1_in<=RF_D2;
+	RF_PC_W<=Program_counter_W;
+	RF_PC_in<=PC_mux_out;
+	PC<=RF_PC_out;
+	RF_W<=RF_W_Mem_WB;
 	
-	imem: instr_memory port map(clk, PC, imem_out);
+	--imem: instr_memory port map(clk, PC, imem_out);
+	imem_out<=i_memory_out;
 	
 	ALU2: ALU port map(PC, "0000000000000010", ALU2_C);
 	

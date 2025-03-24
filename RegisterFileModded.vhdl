@@ -63,7 +63,7 @@ architecture behav of RegisterFileModded is
 
 begin
 
-IP_W <= IP_W_1 xor IP_W_2; --when both are one, don't write to program counter -> don't jump
+IP_W <= IP_W_1 and IP_W_2; --when both are one, don't write to program counter -> don't jump
 RF_W <= RF_W_1 or RF_W_2; --since you can have two simulateneous write operations of the RF
 
 PC_in <= PC_in_1 when IP_W_1 = '1' else
